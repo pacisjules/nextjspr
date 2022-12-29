@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import axios from 'axios';
 
 const initialState = {
   value: 0,
@@ -33,17 +34,29 @@ const initialState = {
 
 
 const Urls = "https://course-api.com/react-useReducer-cart-project";
-
+const urls_currency="http://127.0.0.1:8000/addcurrency";
 
 export const getCartItems = createAsyncThunk(
   'changenameslice/getCartItems',
   
-  async (thunkAPI) => {
-    const response = await fetch(Urls)
-    //console.log(response.json())
-    return response.json()
+  async () => {
+    const response =await axios.get(Urls); 
+    return response.data
   }
 )
+
+
+export const AddCurrency = createAsyncThunk(
+  "changenameslice/AddCurrency",
+  async (data) => {
+    try {
+      const response = await axios.post(urls_currency, data);
+      return response.data;
+    } catch (err) {
+      console.error(err)
+    }
+  }
+);
 
 
 
@@ -90,6 +103,13 @@ export const changenameslice = createSlice({
      builder.addCase(getCartItems.rejected, (state) => {
       state.isLoading='none'
     });
+
+    
+    builder.addCase(AddCurrency.fulfilled, (state, action) => {
+      state.isLoading='none';
+      console.log(action.payload);
+    });
+
     }
 
 })
