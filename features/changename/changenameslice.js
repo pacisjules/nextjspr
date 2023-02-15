@@ -38,7 +38,7 @@ const urls_currency="http://127.0.0.1:8000/addcurrency";
 
 export const getCartItems = createAsyncThunk(
   'changenameslice/getCartItems',
-  
+
   async () => {
     const response =await axios.get(Urls); 
     return response.data
